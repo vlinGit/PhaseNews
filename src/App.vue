@@ -72,7 +72,7 @@ header{
   object-fit: cover;
   filter: blur(5px) brightness(0.5);
   transform: scale(1.1);
-  z-index: -1;
+  z-index: 0;
   position: relative;
 }
 
