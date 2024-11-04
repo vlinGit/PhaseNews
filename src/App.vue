@@ -17,7 +17,7 @@
 
     <div id="bannerContainer">
       <video id="bgBanner" autoplay muted loop>
-        <source :src="bgBanner" type="video/mp4" />
+        <source src="../public/PhaseJPTrailerV6.mp4" type="video/mp4" />
       </video>
     </div>
   </div>
@@ -35,7 +35,6 @@
 import { RouterLink, RouterView } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import '@/main.css';
-import bgBanner from '../src/assets/PhaseJPTrailerV6.mp4'
 
 const showBannerText = ref(false)
 const year = new Date().getFullYear()
