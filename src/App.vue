@@ -16,9 +16,7 @@
     </transition>
 
     <div id="bannerContainer">
-      <video id="bgBanner" autoplay muted loop>
-        <source src="../public/PhaseJPTrailerV6.mp4" type="video/mp4" />
-      </video>
+      <img src="../public/sakanaRocket.gif" id="bgBanner" alt="Banner background">
     </div>
   </div>
 
