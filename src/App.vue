@@ -35,7 +35,7 @@
 import { RouterLink, RouterView } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import '@/main.css';
-import bgBanner from '@/assets/PhaseJPTrailerV6.mp4'
+import bgBanner from './assets/PhaseJPTrailerV6.mp4'
 
 const showBannerText = ref(false)
 const year = new Date().getFullYear()
