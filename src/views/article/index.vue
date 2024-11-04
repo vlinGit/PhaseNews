@@ -36,8 +36,10 @@ const parseArticle = (articleData) => {
         const data = fields.article.content[i]
         if (data.nodeType === 'heading-1'){
             newArticle.body += `<h2>${data.content[0].value}</h2>`
+            article.value.body = newArticle.body
         }else if(data.nodeType === 'paragraph'){
             newArticle.body += `<p>${data.content[0].value}</p>`
+            article.value.body = newArticle.body
         }else if(data.nodeType === 'embedded-asset-block'){
             const assetId = data.data.target.sys.id
             client.getAsset(assetId)
