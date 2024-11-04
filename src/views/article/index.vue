@@ -1,5 +1,12 @@
 <template>
     <Toast />
+    <header>
+        <div class="wrapper">
+            <nav>
+            <RouterLink to="/">Home</RouterLink>
+            </nav>
+        </div>
+    </header>
     <div class="wrapper">
         <h1 id="title">{{ article.title }}</h1>
         <div class="content" v-html="article.body"></div>
@@ -67,5 +74,11 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
+header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
 </style>

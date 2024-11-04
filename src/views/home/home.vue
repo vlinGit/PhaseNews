@@ -1,6 +1,26 @@
 <template>
     <Toast />
-    <p>hello</p>
+    <div class="banner">
+        <header>
+            <div class="wrapper">
+                <nav>
+                <RouterLink to="/">Home</RouterLink>
+                </nav>
+            </div>
+        </header>
+
+        <transition name="fade" appear>
+            <div id="bannerText" v-if="showBannerText">
+                <h1>Phase News</h1>
+                <p>Your one stop shop for totally trustworthy and unbiased news on phase connect</p>
+            </div>
+        </transition>
+
+        <div id="bannerContainer">
+            <img src="../../../public/sakanaRocket.gif" id="bgBanner" alt="Banner background">
+        </div>
+    </div>
+
     <div class="container">
         <div class="articles">
             <div v-for="article in articles" :key="article.title" class="article" @click="redirect(article.id)">
@@ -17,7 +37,9 @@
 import { onMounted, ref } from 'vue'
 import { client } from '@/contentfulClient.js'
 import { useToast } from "primevue/usetoast"
+import { RouterLink } from 'vue-router';
 
+const showBannerText = ref(false)
 const toast = useToast()
 const articles = ref([])
 const noArticles = ref(0)
@@ -123,6 +145,10 @@ onMounted(() => {
     window.addEventListener('scroll', () => {
         handleScroll()
     })
+
+    setTimeout(() => {
+        showBannerText.value = true
+    }, 200)
 })
 </script>
 
@@ -131,6 +157,7 @@ onMounted(() => {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 3em;
 }
 
 .articles{
@@ -156,6 +183,57 @@ onMounted(() => {
                 line-clamp: 4; 
         -webkit-box-orient: vertical;
     }
+}
+
+header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.banner{
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+#bannerContainer{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+#bgBanner{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(5px) brightness(0.5);
+  transform: scale(1.1);
+  z-index: 0;
+  position: relative;
+}
+
+#bannerText{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
+  z-index: 1;
+
+  h1{
+    font-size: 8em;
+    margin: 0;
+  }
+
+  p{
+    font-size: 1.3em;
+    margin: 0;
+  }
 }
 
 @media (max-width: 800px){
