@@ -1,31 +1,12 @@
 <template>
     <Toast />
-    <div class="banner">
-        <header>
-            <div class="wrapper">
-                <nav>
-                <RouterLink to="/">Home</RouterLink>
-                </nav>
-            </div>
-        </header>
-
-        <transition name="fade" appear>
-            <div id="bannerText" v-if="showBannerText">
-                <h1>Phase News</h1>
-                <p>Your one stop shop for totally trustworthy and unbiased news on phase connect</p>
-            </div>
-        </transition>
-
-        <div id="bannerContainer">
-            <img src="../../../public/sakanaRocket.gif" id="bgBanner" alt="Banner background">
-        </div>
-    </div>
-
+    <banner />
     <div class="container">
         <div class="articles">
             <div v-for="article in articles" :key="article.title" class="article" @click="redirect(article.id)">
                 <div id="thumbnail" :style="{ backgroundImage: 'url(' + article.thumbnailUrl + ')' }" alt="thumbnail"></div>
                 <h1 id="title">{{ article.title }}</h1>
+                <p id="date">{{ article.date }}</p>
                 <div id="body" v-html="article.body"></div>
             </div>
         </div>
@@ -37,9 +18,8 @@
 import { onMounted, ref } from 'vue'
 import { client } from '@/contentfulClient.js'
 import { useToast } from "primevue/usetoast"
-import { RouterLink } from 'vue-router';
+import banner from '@/components/banner.vue'
 
-const showBannerText = ref(false)
 const toast = useToast()
 const articles = ref([])
 const noArticles = ref(0)
@@ -60,7 +40,8 @@ const parseArticle = (articleData, assets) => {
         id: articleData.sys.id,
         thumbnailUrl: "",   
         title: fields.entryName,
-        body: ""
+        body: "",
+        date: articleData.sys.updatedAt.split('T')[0],
     }
 
     for (var i = 0; i < fields.article.content.length; i++){
@@ -145,10 +126,6 @@ onMounted(() => {
     window.addEventListener('scroll', () => {
         handleScroll()
     })
-
-    setTimeout(() => {
-        showBannerText.value = true
-    }, 200)
 })
 </script>
 
@@ -169,20 +146,45 @@ onMounted(() => {
 
 .article{
     height: 400px;
+    transition: box-shadow 0.2s;
 
     #thumbnail{
         height: 200px;
         background-size: cover;
         background-position: center;
+        border: 2px solid white;
+    }
+
+    #title{
+        padding: 0 0.5em;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+                line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        font-size: 1.5em;
     }
 
     #body{
         overflow: hidden;
         display: -webkit-box;
-        -webkit-line-clamp: 4; /* number of lines to show */
+        -webkit-line-clamp: 4;
                 line-clamp: 4; 
         -webkit-box-orient: vertical;
+        padding: 0 1em;
     }
+
+    #date{
+        margin: 0;
+        font-style: italic;
+        font-size: 0.8em;
+        padding: 0 1em;
+    }
+}
+
+.article:hover{
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.627);
 }
 
 header{
@@ -191,49 +193,6 @@ header{
   left: 0;
   width: 100%;
   z-index: 1000;
-}
-
-.banner{
-  width: 100%;
-  height: 100vh;
-  position: relative;
-}
-
-#bannerContainer{
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  position: relative;
-}
-
-#bgBanner{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: blur(5px) brightness(0.5);
-  transform: scale(1.1);
-  z-index: 0;
-  position: relative;
-}
-
-#bannerText{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  text-align: center;
-  z-index: 1;
-
-  h1{
-    font-size: 8em;
-    margin: 0;
-  }
-
-  p{
-    font-size: 1.3em;
-    margin: 0;
-  }
 }
 
 @media (max-width: 800px){

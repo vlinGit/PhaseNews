@@ -1,14 +1,10 @@
 <template>
     <Toast />
-    <header>
-        <div class="wrapper">
-            <nav>
-            <RouterLink to="/">Home</RouterLink>
-            </nav>
-        </div>
-    </header>
     <div class="wrapper">
-        <h1 id="title">{{ article.title }}</h1>
+        <div class="content">
+            <h1 id="title">{{ article.title }}</h1>
+            <p id="date">Last Updated On: {{ article.date }}</p> 
+        </div>
         <div class="content" v-html="article.body"></div>
     </div>
 </template>
@@ -28,14 +24,16 @@ const route = useRoute();
 const articleId  = ref(route.path.split('/')[2])
 const article = ref({
     title: "",
-    body: ""
+    body: "",
+    date: ""
 })
 
-const parseArticle = (articleData) => {
+async function parseArticle (articleData){
     const fields = articleData.fields
     var newArticle = {
-        title: articleData.entryName,
-        body: ""
+        title: fields.entryName,
+        body: "",
+        date: articleData.sys.updatedAt.split('T')[0],
     }
 
     article.value.title = newArticle.title
@@ -44,15 +42,18 @@ const parseArticle = (articleData) => {
         if (data.nodeType === 'heading-1'){
             newArticle.body += `<h2>${data.content[0].value}</h2>`
             article.value.body = newArticle.body
+            article.value.date = newArticle.date
         }else if(data.nodeType === 'paragraph'){
             newArticle.body += `<p>${data.content[0].value}</p>`
             article.value.body = newArticle.body
+            article.value.date = newArticle.date
         }else if(data.nodeType === 'embedded-asset-block'){
             const assetId = data.data.target.sys.id
-            client.getAsset(assetId)
+            await client.getAsset(assetId)
                 .then((res) => {
-                    newArticle.body += `<img src="${res.fields.file.url}" alt="${res.fields.file.title}">`
+                    newArticle.body += `<div style="display: flex;justify-content:center;"><img style="width:60%;" src="${res.fields.file.url}" alt="${res.fields.file.title}"></div>`
                     article.value.body = newArticle.body
+                    article.value.date = newArticle.date
                 })
                 .catch((error) => {
                     console.error(error)
@@ -74,11 +75,32 @@ onMounted(() => {
 </script>
 
 <style scoped>
-header{
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
+.wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 5em;
+    margin-bottom: 5em;
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+
+    #title{
+        font-size: 3em;
+    }
+
+    #date{
+        font-style: italic;
+        opacity: 0.8;
+    }
+}
+@media (max-width: 600px){
+    .content{
+        width: 90%;
+    }
 }
 </style>
