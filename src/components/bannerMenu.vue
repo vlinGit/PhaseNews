@@ -1,6 +1,11 @@
 <template>
     <header>
         <Menubar class="wrapper" :class="solidBg ? 'scrolled' : ''" :model="menuItems">
+            <template #end>
+                <RouterLink to="/">
+                    <img src="../../public/logo.svg" alt="logo" style="width: 5em;">
+                </RouterLink>
+            </template>
             <template #item="{ item }">
                 <RouterLink :to="item.path" class="link">{{ item.label }}</RouterLink>
             </template>
