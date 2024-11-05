@@ -5,7 +5,8 @@
         <p id="twitter">Send us a DM through <a href="https://x.com/thephasenews" target="_blank">X (Twitter)</a></p>
         <div class="form">
             <h1>Fill out a form:</h1>
-            <form name="Contact" netlify netlify-honeypot="bot-field" id="contactForm">
+            <form id="contactForm">
+                <p><input type="hidden" name="form-name" value="contact"/></p>
                 <p>
                     <label><p>Title</p> <input type="text" name="title" required/></label>
                 </p>
@@ -13,7 +14,7 @@
                     <label><p>Email</p> <input type="email" name="email" required/></label>
                 </p>
                 <p>
-                    <label><p>Message</p> <textarea id="message" required/></label>
+                    <label><p>Message</p> <textarea name="message" id="message" required/></label>
                 </p>
                 <p>
                     <button type="submit">Submit</button>
@@ -27,24 +28,27 @@
 import banner from '@/components/banner.vue'
 import { onMounted } from 'vue';
 
-const submitForm = (event) => {
-    event.preventDefault();
+function  encode(data) {
+    return Object.keys(data)
+        .map(
+            key => `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`
+        )
+        .join('&');
+}
 
-    const myForm = event.target;
-    const formData = new FormData(myForm);
-
-    fetch("/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formData).toString()
+function formSubmit() {
+    fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: encode({ 'form-name': 'contact', ...this.form }),
     })
-        .then(() => console.log("Form successfully submitted"))
+        .then(() => console.log('You have sucessfully submitted the form'))
         .catch(error => alert(error));
 }
 
 onMounted(() => {
-    document.querySelector("#contactForm").addEventListener("submit", submitForm);
-})
+    document.querySelector('#contactForm').addEventListener('submit', formSubmit);
+});
 </script>
 
 <style scoped>
@@ -66,6 +70,11 @@ onMounted(() => {
     padding: 1em;
     
     input[type=email]{
+        width: 100%;
+        padding: 1em;
+    }
+
+    input[type=text]{
         width: 100%;
         padding: 1em;
     }
