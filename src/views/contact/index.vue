@@ -5,23 +5,14 @@
         <p id="twitter">Send us a DM through <a href="https://x.com/thephasenews" target="_blank">X (Twitter)</a></p>
         <div class="form">
             <h1>Fill out a form:</h1>
-            <form name="Contact" netlify>
-                <p>
-                    <label><p>Email</p> <input type="email" name="email" /></label>
-                </p>
-                <p>
-                    <label><p>Message</p> <textarea id="message"/></label>
-                </p>
-                <p>
-                    <button type="submit">Submit</button>
-                </p>
-            </form>
+            <div v-html="netlifyForm"/>
         </div>
     </div>
 </template>
 
 <script setup>
 import banner from '@/components/banner.vue'
+import netlifyForm from '/form.html?url&raw'
 </script>
 
 <style scoped>
