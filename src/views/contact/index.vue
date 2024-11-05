@@ -4,8 +4,8 @@
         <p>Have information you'd like to direct to the team? Perhaps a juicy scandal you'd like us to report on? Feel free to reach to us using the following methods:</p>
         <p id="twitter">Send us a DM through <a href="https://x.com/thephasenews" target="_blank">X (Twitter)</a></p>
         <div class="form">
-            <h1>Fill out a form:</h1>
-            <form id="contactForm">
+            <h1 v-if="showForm">Fill out a form:</h1>
+            <form id="contactForm" v-if="showForm">
                 <p><input type="hidden" name="form-name" value="contact"/></p>
                 <p>
                     <label><p>Title</p> <input type="text" name="title" required/></label>
@@ -20,14 +20,19 @@
                     <button type="submit">Submit</button>
                 </p>
             </form>
+            <div class="confirmBox" v-else>
+                <h1>Thank you for your submission!</h1>
+                <p>We'll get back to you as soon as possible.</p>
+            </div>
         </div>
     </div>
 </template>
 
 <script setup>
 import banner from '@/components/banner.vue'
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 
+const showForm = ref(true)
 const handleSubmit = event => {
   event.preventDefault();
 
@@ -39,12 +44,12 @@ const handleSubmit = event => {
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams(formData).toString()
   })
-    .then(() => console.log("Form successfully submitted"))
+    .then(() => showForm.value = false)
     .catch(error => alert(error));
 };
 
 onMounted(() => {
-    document.querySelector("form").addEventListener("submit", handleSubmit);
+    // document.querySelector("form").addEventListener("submit", handleSubmit);
 })
 
 </script>
