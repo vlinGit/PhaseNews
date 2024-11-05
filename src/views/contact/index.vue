@@ -28,27 +28,25 @@
 import banner from '@/components/banner.vue'
 import { onMounted } from 'vue';
 
-function  encode(data) {
-    return Object.keys(data)
-        .map(
-            key => `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`
-        )
-        .join('&');
-}
+const handleSubmit = event => {
+  event.preventDefault();
 
-function formSubmit() {
-    fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: encode({ 'form-name': 'contact', ...this.form }),
-    })
-        .then(() => console.log('You have sucessfully submitted the form'))
-        .catch(error => alert(error));
-}
+  const myForm = event.target;
+  const formData = new FormData(myForm);
+
+  fetch("/", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams(formData).toString()
+  })
+    .then(() => console.log("Form successfully submitted"))
+    .catch(error => alert(error));
+};
 
 onMounted(() => {
-    document.querySelector('#contactForm').addEventListener('submit', formSubmit);
-});
+    document.querySelector("form").addEventListener("submit", handleSubmit);
+})
+
 </script>
 
 <style scoped>
