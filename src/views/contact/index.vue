@@ -3,10 +3,7 @@
     <div class="content">
         <p>Have information you'd like to direct to the team? Perhaps a juicy scandal you'd like us to report on? Feel free to reach to us using the following methods:</p>
         <p id="twitter">Send us a DM through <a href="https://x.com/thephasenews" target="_blank">X (Twitter)</a></p>
-        <div class="form">
-            <h1>Fill out a form:</h1>
-            <div v-html="netlifyForm"/>
-        </div>
+        <p id="twitter" >Fill out a <a href="/form.html">form</a></p>
     </div>
 </template>
 
