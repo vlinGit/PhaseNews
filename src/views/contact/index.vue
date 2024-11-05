@@ -49,7 +49,7 @@ const handleSubmit = event => {
 };
 
 onMounted(() => {
-    // document.querySelector("form").addEventListener("submit", handleSubmit);
+    document.querySelector("form").addEventListener("submit", handleSubmit);
 })
 
 </script>
