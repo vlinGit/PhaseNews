@@ -3,13 +3,48 @@
     <div class="content">
         <p>Have information you'd like to direct to the team? Perhaps a juicy scandal you'd like us to report on? Feel free to reach to us using the following methods:</p>
         <p id="twitter">Send us a DM through <a href="https://x.com/thephasenews" target="_blank">X (Twitter)</a></p>
-        <p id="twitter" >Fill out a <a href="/form.html">form</a></p>
+        <div class="form">
+            <h1>Fill out a form:</h1>
+            <form name="Contact" netlify netlify-honeypot="bot-field" id="contactForm">
+                <p>
+                    <label><p>Title</p> <input type="text" name="title" required/></label>
+                </p>
+                <p>
+                    <label><p>Email</p> <input type="email" name="email" required/></label>
+                </p>
+                <p>
+                    <label><p>Message</p> <textarea id="message" required/></label>
+                </p>
+                <p>
+                    <button type="submit">Submit</button>
+                </p>
+            </form>
+        </div>
     </div>
 </template>
 
 <script setup>
 import banner from '@/components/banner.vue'
-import netlifyForm from '/form.html?url&raw'
+import { onMounted } from 'vue';
+
+const submitForm = (event) => {
+    event.preventDefault();
+
+    const myForm = event.target;
+    const formData = new FormData(myForm);
+
+    fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formData).toString()
+    })
+        .then(() => console.log("Form successfully submitted"))
+        .catch(error => alert(error));
+}
+
+onMounted(() => {
+    document.querySelector("#contactForm").addEventListener("submit", submitForm);
+})
 </script>
 
 <style scoped>

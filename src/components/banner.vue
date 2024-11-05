@@ -8,7 +8,7 @@
         </transition>
 
         <div id="bannerContainer">
-            <img src="../../public/sakanaRocket.gif" id="bgBanner" alt="Banner background">
+            <img src="/sakanaRocket.gif" id="bgBanner" alt="Banner background">
         </div>
     </div>
 </template>
