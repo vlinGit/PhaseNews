@@ -44,7 +44,18 @@ async function parseArticle (articleData){
             article.value.body = newArticle.body
             article.value.date = newArticle.date
         }else if(data.nodeType === 'paragraph'){
-            newArticle.body += `<p>${data.content[0].value}</p>`
+            const contents = data.content
+
+            var tempBody = ""
+            for (var j = 0; j < contents.length; j++){
+                if (contents[j].nodeType === 'text'){
+                    tempBody += `${contents[j].value}`
+                }else if (contents[j].nodeType === 'hyperlink'){
+                    tempBody += "<a style='color: #3f9bfc' target='_blank' href='" + contents[j].data.uri + "'>" + contents[j].content[0].value + "</a>"
+                }
+            }
+            
+            newArticle.body += `<p>${tempBody}</p>`
             article.value.body = newArticle.body
             article.value.date = newArticle.date
         }else if(data.nodeType === 'embedded-asset-block'){
@@ -98,6 +109,7 @@ onMounted(() => {
         opacity: 0.8;
     }
 }
+
 @media (max-width: 600px){
     .content{
         width: 90%;

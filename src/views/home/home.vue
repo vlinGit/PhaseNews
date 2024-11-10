@@ -47,7 +47,18 @@ const parseArticle = (articleData, assets) => {
     for (var i = 0; i < fields.article.content.length; i++){
         const data = fields.article.content[i]
         if(data.nodeType === 'paragraph'){
-            newArticle.body += `<p>${data.content[0].value}</p>`
+            const contents = data.content
+
+            var tempBody = ""
+            for (var j = 0; j < contents.length; j++){
+                if (contents[j].nodeType === 'text'){
+                    tempBody += `${contents[j].value}`
+                }else if (contents[j].nodeType === 'hyperlink'){
+                    tempBody += contents[j].content[0].value
+                }
+            }
+
+            newArticle.body += `<p>${tempBody}</p>`
         }
 
         try{
@@ -101,22 +112,11 @@ const getArticles = () => {
         })
 }
 
-const isScrolledIntoView = (el) => {
-  let rect = el.getBoundingClientRect()
-  let elemTop = rect.top
-  let elemBottom = rect.bottom
-
-  let isVisible = elemTop < window.innerHeight && elemBottom >= 0
-  return isVisible
-}
-
 const handleScroll = () => {
   window.onscroll = (event) => {
-    let scrolledTo = document.querySelector('.end')
-
-    if (scrolledTo && isScrolledIntoView(scrolledTo)) {
-        getArticles()
-    }
+    const scrolledTo = window.scrollY + window.innerHeight;
+    const isReachBottom = document.body.scrollHeight === scrolledTo;
+    if (isReachBottom) getArticles();
   }
 }
 
