@@ -28,6 +28,14 @@ const article = ref({
     date: ""
 })
 
+const parseText = (text) => {
+    if (text.includes('iframe')){
+        return '<div style="display: flex;justify-content:center;">' + text + '</div>'
+    }
+
+    return text
+}
+
 async function parseArticle (articleData){
     const fields = articleData.fields
     var newArticle = {
@@ -49,9 +57,9 @@ async function parseArticle (articleData){
             var tempBody = ""
             for (var j = 0; j < contents.length; j++){
                 if (contents[j].nodeType === 'text'){
-                    tempBody += `${contents[j].value}`
+                    tempBody += parseText(contents[j].value)
                 }else if (contents[j].nodeType === 'hyperlink'){
-                    tempBody += "<a style='color: #3f9bfc' target='_blank' href='" + contents[j].data.uri + "'>" + contents[j].content[0].value + "</a>"
+                    tempBody += "<a style='color: #3f9bfc' target='_blank' href='" + content.data.uri + "'>" + content.content[0].value + "</a>"
                 }
             }
             
