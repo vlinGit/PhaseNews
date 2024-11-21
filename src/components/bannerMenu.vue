@@ -1,16 +1,12 @@
 <template>
-    <header>
-        <Menubar class="wrapper" :class="solidBg ? 'scrolled' : ''" :model="menuItems">
-            <template #end>
-                <RouterLink to="/">
-                    <img src="/logo.svg" alt="logo" style="width: 5em;">
-                </RouterLink>
-            </template>
-            <template #item="{ item }">
-                <RouterLink :to="item.path" class="link">{{ item.label }}</RouterLink>
-            </template>
-        </Menubar>
-    </header>
+    <div class="container">
+        <RouterLink to="/">
+            <img src="/logo.svg" alt="logo">
+        </RouterLink>
+        <div class="menu">
+            <RouterLink v-for="item in menuItems" :to="item.path" class="link">{{ item.label }}</RouterLink>
+        </div>
+    </div>
 </template>
 
 <script setup>
@@ -49,34 +45,34 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.scrolled{
-    transition: all 0.3s ease-in-out;
-    background-color: #181a1b !important;
-    --p-menubar-submenu-background: #181a1b !important;
-}
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
 
-header{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    transition: all 0.3s ease-in-out;
-    background-color: #181a1b00;
-}
+    .menu{
+        display: flex;
+        gap: 20px;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .menu > :not(:last-child)::after {
+        content: "";
+        margin-left: 9px;
+        margin-right: 0;
+        position: absolute;
+        width: 4px;
+        height: 2em;
+        background-color: white;
+    }
 
-.wrapper{
-    --p-menubar-gap: 2em;
-    --p-menubar-padding: 1em 2em;
-    --p-icon-size: 3em;
-    --p-menubar-submenu-padding: 1em 2em;
-    --p-menubar-submenu-gap: 1em;
-    --p-menubar-submenu-background: #181a1b00;
-    transition: all 0.3s ease-in-out;
 }
 
 .link{
-    font-size: 1em;
+    font-size: 2em;
     color: white;
     text-decoration: none;
     transition: all 0.1s ease-in;
@@ -86,11 +82,6 @@ header{
     color: rgb(126, 126, 126);
 }
 
-@media (max-width: 960px){
-    .link{
-        font-size: 2em;
-    }
-}
 </style>
 
 <style>
