@@ -12,8 +12,8 @@
                     <img src="/smallLogo.png" alt="logo">
                     <div class="seperator"></div>
                     <div class="weather">
-                        <p>68°F</p>
-                        <p><b>Cloudy</b> 20°C</p>
+                        <p>{{ tempF }} °F</p>
+                        <p><b>{{ weather }}</b> {{ tempC }} °C</p>
                     </div>
                 </div>
                 <div class="mainTitle">
@@ -56,13 +56,16 @@
 import { onMounted, ref } from 'vue'
 import { client } from '@/contentfulClient.js'
 import { useToast } from "primevue/usetoast"
-import banner from '@/components/banner.vue'
+import axios from 'axios'
 
 const toast = useToast()
 const articles = ref([])
 const noArticles = ref(0)
 const limit = 6
 const stopRequest = ref(false)
+const tempF = ref("-"),
+    tempC = ref("-"),
+    weather = ref("N/A");
 
 const showError = (error) => {
     toast.add({ severity: 'error', summary: 'An error occured', detail: error, life: 2000 })
@@ -150,6 +153,25 @@ const getArticles = () => {
         })
 }
 
+const getWeather = () => {
+    if (navigator.geolocation){
+        navigator.geolocation.getCurrentPosition((position) => {
+            axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=imperial&appid=${import.meta.env.VITE_OPENWEATHER_API_TOKEN}`)
+                .then((res) => {
+                    const data = res.data.list[0]
+                    tempF.value = (data.main.temp).toFixed(1)
+                    tempC.value = ((data.main.temp - 32) * 5/9).toFixed(1)
+                    weather.value = data.weather[0].main
+                }).catch((err) => {
+                    console.error(err)
+                    tempF.value = "-"
+                    tempC.value = "-"
+                    weather.value = "N/A"
+                })
+        })
+    }
+}
+
 const handleScroll = () => {
     window.onscroll = (event) => {
         const scrolledTo = window.scrollY + window.innerHeight;
@@ -159,8 +181,8 @@ const handleScroll = () => {
 }
 
 onMounted(() => {
+    getWeather()
     getArticles()
-
     window.addEventListener('scroll', () => {
         handleScroll()
     })
@@ -170,8 +192,10 @@ onMounted(() => {
 <style scoped>
 .wrapper{
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-bottom: 5em;
 }
 
 .container{
@@ -180,23 +204,48 @@ onMounted(() => {
     align-items: center;
     justify-content: center;
     padding: 3em 4em;
-    gap: 30px;
+    gap: 4em;
     background-color: #323233;
     border-radius: 10px 48px 48px 10px;
     width: 80%;
     max-width: 1460px;
+    position: relative;
+}
+
+.container::before{
+    content: '';
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: #414143;
+    margin-left: 20px;
+    position: absolute;
+    z-index: -1;
+    border-radius: 10px 48px 48px 10px;
+}
+
+.container::after{
+    content: '';
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: #4d4d4f;
+    position: absolute;
+    z-index: -2;
+    border-radius: 10px 48px 48px 10px;
+    margin-left: 37px;
 }
 
 .articles{
     display: grid;
     grid-template-columns: repeat(1, 1fr);
-    gap: 1.5em;
+    gap: 4em;
     width: 100%;
 }
 
 .article{
     display: flex;
-    height: fit-content;
+    align-items: center;
     transition: box-shadow 0.2s;
 
     .content{
@@ -205,7 +254,7 @@ onMounted(() => {
 
     .thumbnail{
         width: 60%;
-        height: 200px;
+        height: 300px;
         background-size: cover;
         background-position: center;
         border: 2px solid white;
@@ -218,7 +267,7 @@ onMounted(() => {
                 line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
-        font-size: 1.5em;
+        font-size: 2em;
     }
 
     .body{
@@ -340,8 +389,8 @@ onMounted(() => {
 
         .title{
             display: -webkit-box;
-            -webkit-line-clamp: 2;
-                    line-clamp: 2;
+            -webkit-line-clamp: 4;
+                -line-clamp: 4;
             -webkit-box-orient: vertical;
             overflow: hidden;
             font-size: 3.5em;
@@ -373,14 +422,13 @@ onMounted(() => {
     .container{
         width: 90%;
     }
-}
 
-@media (max-width: 600px){
     .article{
         flex-direction: column;
 
         .thumbnail{
             width: 100%;
+            height: 250px;
         }
 
         .content{
@@ -394,6 +442,39 @@ onMounted(() => {
 
     .articles{
         grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+@media (max-width: 600px){
+    .container{
+        padding: 2em 2em;
+    }
+
+    .header{
+        .top{
+            img{
+                width: 10vw;
+                height: 5vw;
+                min-width: 30px;
+                min-height: 20px;
+            }
+        }
+
+        .mainTitle{
+            h1{
+                font-size: 3em;
+            }
+        }
+
+        .recentArticle{
+            .title{
+                font-size: 2em;
+            }
+
+            .thumbnail{
+                height: 400px;
+            }
+        }
     }
 }
 </style>

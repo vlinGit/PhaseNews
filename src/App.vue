@@ -1,12 +1,7 @@
 <template>
-  <div class="container">
+  <div class="mainContainer">
     <bannerMenu />
     <RouterView />
-    <div class="footer" v-if="footerVisible">
-      <p>&copy; {{ year }} Phase News | Satire LLC | No Rights Reserved</p>
-      <Button id="closeFooter" icon="pi pi-times" severity="danger" variant="text" rounded aria-label="Cancel" 
-        @click="footerVisible = false"/>
-    </div>
   </div>
 </template>
 
@@ -46,10 +41,24 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.container{
+.mainContainer{
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 30px;
+  background-image: url('/assets/background.png');
+  position: relative;
+  background-attachment: fixed;
+}
+
+.menuContainer::after{
+  content: '';
+  height: 80%;
+  width: 100%;
+  background-color: rgb(16, 18, 18);
+  position: absolute;
+  bottom: 0;
+  z-index: 0;
 }
 
 .footer{

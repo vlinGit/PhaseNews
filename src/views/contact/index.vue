@@ -57,6 +57,7 @@ onMounted(() => {
 <style scoped>
 .content{
     padding: 4em;
+    z-index: 1;
 }
 
 #twitter{

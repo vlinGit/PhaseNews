@@ -1,10 +1,12 @@
 <template>
-    <div class="container">
-        <RouterLink to="/">
-            <img src="/logo.svg" alt="logo">
-        </RouterLink>
-        <div class="menu">
-            <RouterLink v-for="item in menuItems" :to="item.path" class="link">{{ item.label }}</RouterLink>
+    <div class="menuContainer">
+        <div class="subMenuContainer">
+            <RouterLink to="/">
+                <img src="/logo.svg" alt="logo">
+            </RouterLink>
+            <div class="menu">
+                <RouterLink v-for="item in menuItems" :to="item.path" class="link">{{ item.label }}</RouterLink>
+            </div>
         </div>
     </div>
 </template>
@@ -45,12 +47,21 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.container{
+.menuContainer{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 20px;
+
+    .subMenuContainer{
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-left: 3%;
+        gap: 20px;
+    }
 
     .menu{
         display: flex;
@@ -82,6 +93,14 @@ onMounted(() => {
     color: rgb(126, 126, 126);
 }
 
+@media (max-width: 600px){
+    .menuContainer{
+        img{
+            width: 50vw;
+            min-width: 280px;
+        }
+    }
+}
 </style>
 
 <style>
