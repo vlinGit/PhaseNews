@@ -49,6 +49,7 @@ onMounted(() => {
   background-image: url('/assets/background.png');
   position: relative;
   background-attachment: fixed;
+  z-index: 0;
 }
 
 .menuContainer::after{
@@ -58,7 +59,7 @@ onMounted(() => {
   background-color: rgb(16, 18, 18);
   position: absolute;
   bottom: 0;
-  z-index: 0;
+  z-index: -3;
 }
 
 .footer{
