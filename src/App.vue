@@ -45,9 +45,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 30px;
   background-image: url('/assets/background.png');
-  position: relative;
   background-attachment: fixed;
   z-index: 0;
 }

@@ -1,49 +1,90 @@
 <template>
     <Toast />
     <div class="wrapper">
-        <div class="container">
-            <div class="header">
-                <div class="top">
-                    <div class="date">
-                        <p>{{ new Date().toLocaleString('default', { weekday: 'long' }) }}</p>
-                        <p>{{ new Date().toLocaleString('default', {month: 'long'}) }} {{ new Date().getDate() }}, {{ new Date().getFullYear() }}</p>
+        <div class="initial" ref="initial">
+            <div class="container">
+                <div class="header">
+                    <div class="top">
+                        <div class="date">
+                            <p>{{ new Date().toLocaleString('default', { weekday: 'long' }) }}</p>
+                            <p>{{ new Date().toLocaleString('default', {month: 'long'}) }} {{ new Date().getDate() }}, {{ new Date().getFullYear() }}</p>
+                        </div>
+                        <div class="seperator"></div>
+                        <img src="/smallLogo.png" alt="logo">
+                        <div class="seperator"></div>
+                        <div class="weather">
+                            <p>{{ tempF }} °F</p>
+                            <p><b>{{ weather }}</b> {{ tempC }} °C</p>
+                        </div>
                     </div>
-                    <div class="seperator"></div>
-                    <img src="/smallLogo.png" alt="logo">
-                    <div class="seperator"></div>
-                    <div class="weather">
-                        <p>{{ tempF }} °F</p>
-                        <p><b>{{ weather }}</b> {{ tempC }} °C</p>
+                    <div class="mainTitle">
+                        <h1>The Phase News Paper</h1>
+                        <p>Your one stop shop for totally trustworthy and unbiased news on phase connect</p>
                     </div>
-                </div>
-                <div class="mainTitle">
-                    <h1>The Phase News Paper</h1>
-                    <p>Your one stop shop for totally trustworthy and unbiased news on phase connect</p>
-                </div>
-                <div class="tripleDivider">
-                    <div class="divider"></div>
-                    <div class="divider"></div>
-                    <div class="divider"></div>
-                </div>
-                <div class="disclaimer">
-                    <p>© 2024 Phase News | Satire LLC | No Rights Reserved</p>
-                </div>
-                <div v-for="article in articles.slice(0,1)" :key="article.title" class="recentArticle" @click="redirect(article.id)">
-                    <h1 class="title">{{ article.title }}</h1>
-                    <div class="thumbnail" :style="{ backgroundImage: 'url(' + article.thumbnailUrl + ')' }" alt="thumbnail"></div>
-                    <div class="content">
-                        <p class="date">{{ article.date }}</p>
-                        <div class="body" v-html="article.body"></div>
+                    <div class="tripleDivider">
+                        <div class="divider"></div>
+                        <div class="divider"></div>
+                        <div class="divider"></div>
+                    </div>
+                    <div class="disclaimer">
+                        <p>© 2024 Phase News | Satire LLC | No Rights Reserved</p>
+                    </div>
+                    <div v-for="article in articles.slice(0,1)" :key="article.title" class="recentArticle" @click="redirect(article.id)">
+                        <h1 class="title">{{ article.title }}</h1>
+                        <div class="thumbnail" :style="{ backgroundImage: 'url(' + article.thumbnailUrl + ')' }" alt="thumbnail"></div>
+                        <div class="content">
+                            <p class="date">{{ article.date }}</p>
+                            <div class="body" v-html="article.body"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="articles">
-                <div v-for="article in articles.slice(1, articles.length)" :key="article.title" class="article" @click="redirect(article.id)">
-                    <div class="thumbnail" :style="{ backgroundImage: 'url(' + article.thumbnailUrl + ')' }" alt="thumbnail"></div>
-                    <div class="content">
+        </div>
+        <div class="final" ref="final">
+            <div class="container">
+                <div class="header">
+                    <div class="top">
+                        <div class="date">
+                            <p>{{ new Date().toLocaleString('default', { weekday: 'long' }) }}</p>
+                            <p>{{ new Date().toLocaleString('default', {month: 'long'}) }} {{ new Date().getDate() }}, {{ new Date().getFullYear() }}</p>
+                        </div>
+                        <div class="seperator"></div>
+                        <img src="/smallLogo.png" alt="logo">
+                        <div class="seperator"></div>
+                        <div class="weather">
+                            <p>{{ tempF }} °F</p>
+                            <p><b>{{ weather }}</b> {{ tempC }} °C</p>
+                        </div>
+                    </div>
+                    <div class="mainTitle">
+                        <h1>The Phase News Paper</h1>
+                        <p>Your one stop shop for totally trustworthy and unbiased news on phase connect</p>
+                    </div>
+                    <div class="tripleDivider">
+                        <div class="divider"></div>
+                        <div class="divider"></div>
+                        <div class="divider"></div>
+                    </div>
+                    <div class="disclaimer">
+                        <p>© 2024 Phase News | Satire LLC | No Rights Reserved</p>
+                    </div>
+                    <div v-for="article in articles.slice(0,1)" :key="article.title" class="recentArticle" @click="redirect(article.id)">
                         <h1 class="title">{{ article.title }}</h1>
-                        <p class="date">{{ article.date }}</p>
-                        <div class="body" v-html="article.body"></div>
+                        <div class="thumbnail" :style="{ backgroundImage: 'url(' + article.thumbnailUrl + ')' }" alt="thumbnail"></div>
+                        <div class="content">
+                            <p class="date">{{ article.date }}</p>
+                            <div class="body" v-html="article.body"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="articles">
+                    <div v-for="article in articles.slice(1, articles.length)" :key="article.title" class="article" @click="redirect(article.id)">
+                        <div class="thumbnail" :style="{ backgroundImage: 'url(' + article.thumbnailUrl + ')' }" alt="thumbnail"></div>
+                        <div class="content">
+                            <h1 class="title">{{ article.title }}</h1>
+                            <p class="date">{{ article.date }}</p>
+                            <div class="body" v-html="article.body"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -57,7 +98,14 @@ import { onMounted, ref } from 'vue'
 import { client } from '@/contentfulClient.js'
 import { useToast } from "primevue/usetoast"
 import axios from 'axios'
+import { gsap } from 'gsap'
+import Flip from "gsap/Flip"
+import Draggable from "gsap/Draggable"
 
+gsap.registerPlugin(Flip, Draggable)
+
+const initial = ref()
+const final = ref()
 const toast = useToast()
 const articles = ref([])
 const noArticles = ref(0)
@@ -186,6 +234,28 @@ onMounted(() => {
     window.addEventListener('scroll', () => {
         handleScroll()
     })
+
+    Draggable.create(initial.value, {bounds: "body"})
+
+    gsap.fromTo(initial.value, {
+        rotation: -220,
+        y: 800,
+        opacity: 0
+    },{
+        rotation: -10,
+        y: 0,
+        opacity: 1,
+        ease: "power3.out",
+        duration: 1.2
+    })
+
+    // const state = Flip.getState(initial.value)
+    
+    // Flip.from(state, {
+    //     scale: true,
+    //     duration: 3,
+    //     ease: "power1.in"
+    // }).play()
 })
 </script>
 
@@ -194,26 +264,34 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    margin-bottom: 5em;
+    overflow: hidden;
+}
+
+.initial{
+    transform: scale(0.7);
+    height: calc(100vh - 179px);
+}
+
+.final{
+    display: none;
 }
 
 .container{
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     padding: 3em 4em;
     gap: 4em;
     background-color: #323233;
     border-radius: 10px 48px 48px 10px;
-    width: 80%;
+    width: 100%;
     max-width: 1460px;
     position: relative;
 }
 
 .container::before{
     content: '';
+    top: 0;
     width: 100%;
     height: 100%;
     display: block;
@@ -226,6 +304,7 @@ onMounted(() => {
 
 .container::after{
     content: '';
+    top: 0;
     width: 100%;
     height: 100%;
     display: block;
