@@ -27,7 +27,7 @@
                         <div class="divider"></div>
                     </div>
                     <div class="disclaimer">
-                        <p>© 2024 Phase News | Satire LLC | No Rights Reserved</p>
+                        <p>© {{ new Date().getFullYear() }} Phase News | Satire LLC | No Rights Reserved</p>
                     </div>
                     <div v-for="article in articles.slice(0,1)" :key="article.title" class="recentArticle anim">
                         <h1 class="title">{{ article.title }}</h1>
@@ -69,7 +69,7 @@
                         <div class="divider"></div>
                     </div>
                     <div class="disclaimer">
-                        <p>© 2024 Phase News | Satire LLC | No Rights Reserved</p>
+                        <p>© {{ new Date().getFullYear() }} Phase News | Satire LLC | No Rights Reserved</p>
                     </div>
                     <div v-for="article in articles.slice(0,1)" :key="article.title" class="recentArticle" @click="redirect(article.id)">
                         <h1 class="title">{{ article.title }}</h1>
