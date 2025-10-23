@@ -2,7 +2,7 @@
     <Toast />
     <div class="wrapper">
         <div class="article">
-            <div class="header">
+            <div class="header anim">
                 <div class="top">
                     <div class="date">
                         <p>{{ new Date().toLocaleString('default', { weekday: 'long' }) }}</p>
@@ -30,11 +30,11 @@
                 </div>
             </div>
 
-            <div class="content">
+            <div class="content anim">
                 <h1 id="title">{{ article.title }}</h1>
                 <p id="date">Last Updated On: {{ article.date }}</p> 
             </div>
-            <div class="content" v-html="article.body"></div>
+            <div class="content anim" v-html="article.body"></div>
         </div>
     </div>
 </template>
@@ -45,7 +45,10 @@ import { useRoute } from 'vue-router'
 import { client } from '@/contentfulClient.js'
 import { useToast } from "primevue/usetoast"
 import axios from 'axios'
+import gsap from 'gsap'
+import { useCookies } from "vue3-cookies"
 
+const { cookies } = useCookies()
 const toast = useToast()
 const showError = (error) => {
     toast.add({ severity: 'error', summary: 'An error occured', detail: error, life: 2000 })
@@ -135,6 +138,7 @@ const getWeather = () => {
 }
 
 onMounted(() => {
+    cookies.set("Visited", "1", "Session")
     getWeather()
 
     client.getEntry(articleId.value)
@@ -145,6 +149,13 @@ onMounted(() => {
             console.error(error)
             showError(error)
         })
+
+    gsap.from(".anim", {
+        opacity: 0,
+        y: 50,
+        delay: 0.2,
+        stagger: 0.1
+    })
 })
 </script>
 
@@ -287,7 +298,7 @@ onMounted(() => {
     padding: 3em 4em;
     background-color: #323233;
     border-radius: 10px 48px 48px 10px;
-    width: 80%;
+    width: 90%;
     max-width: 1460px;
     position: relative;
 }

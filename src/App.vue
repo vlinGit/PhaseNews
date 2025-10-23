@@ -1,12 +1,11 @@
 <template>
   <div class="mainContainer">
     <bannerMenu />
-    <RouterView />
+    <div class="routerClass"><RouterView /></div>
   </div>
 </template>
 
 <script setup>
-import { RouterView } from 'vue-router'
 import '@/main.css';
 import 'primeicons/primeicons.css'
 import bannerMenu from '@/components/bannerMenu.vue';
@@ -45,9 +44,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 30px;
   background-image: url('/assets/background.png');
-  position: relative;
   background-attachment: fixed;
   z-index: 0;
 }

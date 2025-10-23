@@ -1,4 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { gsap } from 'gsap'
+import Flip from "gsap/Flip"
+import Draggable from "gsap/Draggable"
+
+gsap.registerPlugin(Flip, Draggable)
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +32,15 @@ const router = createRouter({
       component: () => import('../views/contact/index.vue')
     }
   ],
+})
+
+router.beforeEach((to,from) => {
+  requestAnimationFrame(() => {
+    const page = document.querySelector('.routerClass')
+    if (page) {
+      gsap.fromTo(page, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.6, ease: 'power2.out' })
+    }
+  })
 })
 
 export default router
