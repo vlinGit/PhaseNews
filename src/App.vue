@@ -1,12 +1,11 @@
 <template>
   <div class="mainContainer">
     <bannerMenu />
-    <RouterView />
+    <div class="routerClass"><RouterView /></div>
   </div>
 </template>
 
 <script setup>
-import { RouterView } from 'vue-router'
 import '@/main.css';
 import 'primeicons/primeicons.css'
 import bannerMenu from '@/components/bannerMenu.vue';
