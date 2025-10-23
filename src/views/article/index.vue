@@ -26,7 +26,7 @@
                     <div class="divider"></div>
                 </div>
                 <div class="disclaimer">
-                    <p>© 2024 Phase News | Satire LLC | No Rights Reserved</p>
+                    <p>© {{ new Date().getFullYear() }} Phase News | Satire LLC | No Rights Reserved</p>
                 </div>
             </div>
 
