@@ -2,33 +2,7 @@
     <Toast />
     <div class="wrapper">
         <div class="article">
-            <div class="header anim">
-                <div class="top">
-                    <div class="date">
-                        <p>{{ new Date().toLocaleString('default', { weekday: 'long' }) }}</p>
-                        <p>{{ new Date().toLocaleString('default', {month: 'long'}) }} {{ new Date().getDate() }}, {{ new Date().getFullYear() }}</p>
-                    </div>
-                    <div class="seperator"></div>
-                    <img src="/smallLogo.png" alt="logo">
-                    <div class="seperator"></div>
-                    <div class="weather">
-                        <p>{{ tempF }} °F</p>
-                        <p><b>{{ weather }}</b> {{ tempC }} °C</p>
-                    </div>
-                </div>
-                <div class="mainTitle">
-                    <h1>The Phase News Paper</h1>
-                    <p>Your one stop shop for totally trustworthy and unbiased news on phase connect</p>
-                </div>
-                <div class="tripleDivider">
-                    <div class="divider"></div>
-                    <div class="divider"></div>
-                    <div class="divider"></div>
-                </div>
-                <div class="disclaimer">
-                    <p>© {{ new Date().getFullYear() }} Phase News | Satire LLC | No Rights Reserved</p>
-                </div>
-            </div>
+            <Header></Header>
 
             <div class="content anim">
                 <h1 id="title">{{ article.title }}</h1>
@@ -47,6 +21,7 @@ import { useToast } from "primevue/usetoast"
 import axios from 'axios'
 import gsap from 'gsap'
 import { useCookies } from "vue3-cookies"
+import Header from '@/components/header.vue'
 
 const { cookies } = useCookies()
 const toast = useToast()
