@@ -3,7 +3,7 @@
     <div class="wrapper" ref="wrapper">
         <div class="initial" ref="initial" data-flip-id="news" @click="handleInitialClick">
             <div class="container">
-                <Header :show-article="true"></Header>
+                <Header class="anim" :show-article="true"></Header>
 
                 <div class="fold1"></div>
                 <div class="fold2"></div>
@@ -11,11 +11,11 @@
         </div>
         <div class="final" ref="final" data-flip-id="news">
             <div class="container">
-                <Header :show-article="true"></Header>
+                <Header class="anim" :show-article="true"></Header>
 
                 <div class="articles anim">
                     <div v-for="article in articles.slice(1, articles.length)" :key="article.title"
-                        :class="['article', 'article' + article.id]" @click="redirect(article.id)">
+                        class="article" :id="'article' + article.id" @click="redirect(article.id)">
                         <div class="thumbnail" :style="{ backgroundImage: 'url(' + article.thumbnailUrl + ')' }"
                             alt="thumbnail"></div>
                         <div class="content">
@@ -65,6 +65,7 @@ const articles = ref([])
 const noArticles = ref(0)
 const limit = 6
 const loading = ref()
+const articleDelay = 0.25
 
 const showError = (error) => {
     toast.add({ severity: 'error', summary: 'An error occured', detail: error, life: 2000 })
@@ -77,7 +78,8 @@ const redirect = (id) => {
 
 const handleScroll = async () => {
     const scrolledTo = window.scrollY + window.innerHeight;
-    const isReachBottom = (document.body.scrollHeight) == scrolledTo;
+    const isReachBottom = (document.body.scrollHeight) <= scrolledTo;
+    console.log(document.body.scrollHeight, scrolledTo)
     if (isReachBottom) {
         window.removeEventListener("scroll", handleScroll)
         loading.value.classList.add("active")
@@ -88,16 +90,18 @@ const handleScroll = async () => {
             articles.value = articles.value.concat(result)
             noArticles.value += articles.value.length
         }).finally(() => {
+            var delayCount = 0
             for (let article of articleResult) {
-                let articleClass = ".article" + article.id
-                gsap.fromTo(articleClass, {
+                let articleId = "#article" + article.id
+                gsap.fromTo(document.querySelector(articleId), {
                     y: 100,
                     opacity: 0,
                     duration: 2
                 }, {
                     y: 0,
                     opacity: 1
-                }).delay(0.2)
+                }).delay(0.2 + delayCount)
+                delayCount += articleDelay
             }
             window.addEventListener("scroll", handleScroll)
             loading.value.classList.toggle("active")
@@ -142,6 +146,22 @@ const firstAnim = () => {
 onMounted(() => {
     const visitedCookie = cookies.get("Visited");
     window.addEventListener('scroll', handleScroll)
+
+    let articleResult = []
+    getArticles(client, limit, noArticles.value).then((result: any) => {
+        articleResult = result
+        articles.value = articles.value.concat(result)
+        noArticles.value += articles.value.length
+    }).finally(() => {
+        gsap.fromTo(document.querySelector(".article"), {
+            y: 100,
+            opacity: 0,
+            duration: 2
+        }, {
+            y: 0,
+            opacity: 1
+        })
+    })
 
     if (visitedCookie != "1") {
         firstAnim()
