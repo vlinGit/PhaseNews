@@ -25,7 +25,7 @@
         <div class="disclaimer">
             <p>© {{ new Date().getFullYear() }} Phase News | Satire LLC | No Rights Reserved</p>
         </div>
-        <div v-if="props.showArticle && article" class="recentArticle" @click="router.push({ path: `/article/${article.id}` })">
+        <div v-if="props.showArticle && article" class="recentArticle" @click="handleLink(article.id)">
             <h1 class="title">{{ article.title }}</h1>
             <div class="thumbnail" :style="{ backgroundImage: 'url(' + article.thumbnailUrl + ')' }" alt="thumbnail"></div>
             <div class="content">
@@ -46,8 +46,10 @@ import axios from 'axios'
 const router = useRouter()
 const props = withDefaults(defineProps<{
     showArticle?: boolean
+    allowClick?: boolean
 }>(), {
-    showArticle: false
+    showArticle: false,
+    allowClick: true
 })
 const article = ref()
 const tempF = ref("-"),
@@ -71,6 +73,14 @@ const getWeather = () => {
                 })
         })
     }
+}
+
+const handleLink = (id: string) => {
+    if (!props.allowClick){
+        return
+    }
+
+    router.push({ path: `/article/${id}` })
 }
 
 onMounted(() => {

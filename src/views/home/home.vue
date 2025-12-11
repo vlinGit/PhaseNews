@@ -3,7 +3,7 @@
     <div class="wrapper" ref="wrapper">
         <div class="initial" ref="initial" data-flip-id="news" @click="handleInitialClick">
             <div class="container">
-                <Header class="anim" :show-article="true"></Header>
+                <Header class="anim" :allow-click="false" :show-article="true"></Header>
 
                 <div class="fold1"></div>
                 <div class="fold2"></div>
@@ -109,7 +109,7 @@ const handleScroll = async () => {
     }
 }
 
-const handleInitialClick = () => {
+const handleInitialClick = (event: Event) => {
     const state = Flip.getState([initial.value, final.value])
 
     initial.value.classList.toggle("active")
