@@ -15,7 +15,7 @@
         </div>
         <div class="mainTitle">
             <h1>The Phase News Paper</h1>
-            <p>Your one stop shop for totally trustworthy and unbiased news on phase connect</p>
+            <p>Your one stop shop for totally trustworthy and unbiased news on Phase Connect</p>
         </div>
         <div class="tripleDivider">
             <div class="divider"></div>
